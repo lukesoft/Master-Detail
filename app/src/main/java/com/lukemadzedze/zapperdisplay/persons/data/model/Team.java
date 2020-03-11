@@ -1,10 +1,26 @@
 package com.lukemadzedze.zapperdisplay.persons.data.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity(tableName = "teams")
 public class Team implements Serializable {
+    @PrimaryKey
+    @NonNull
+    private int id;
     private String person;
     private String team;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPerson() {
         return person;

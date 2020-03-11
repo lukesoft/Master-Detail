@@ -15,7 +15,7 @@ public class PersonDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "id";
 
 
-    private Integer id ;
+    private int id ;
 
     public PersonDetailFragment() {
     }

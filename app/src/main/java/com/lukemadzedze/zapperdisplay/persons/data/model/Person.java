@@ -1,16 +1,21 @@
 package com.lukemadzedze.zapperdisplay.persons.data.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity (tableName = "persons")
 public class Person implements Serializable {
-    private String id;
+    @PrimaryKey
+    private int id;
     private String name;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

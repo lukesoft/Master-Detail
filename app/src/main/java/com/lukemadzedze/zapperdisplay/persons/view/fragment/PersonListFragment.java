@@ -47,7 +47,7 @@ public class PersonListFragment extends Fragment {
             public void onClick(View view) {
                 Person item = (Person) view.getTag();
                 Bundle arguments = new Bundle();
-                arguments.putString(PersonDetailFragment.ARG_ITEM_ID, item.getId());
+                arguments.putInt(PersonDetailFragment.ARG_ITEM_ID, item.getId());
                 PersonDetailFragment fragment = new PersonDetailFragment();
                 fragment.setArguments(arguments);
 
