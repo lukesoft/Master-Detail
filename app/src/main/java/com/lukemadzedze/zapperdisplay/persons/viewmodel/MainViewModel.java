@@ -37,10 +37,5 @@ public class MainViewModel extends ViewModel {
     public LiveData<Resource<List<Person>>> getPersons() {
         return personsRepository.getPersons();
     }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-    }
 }
 
