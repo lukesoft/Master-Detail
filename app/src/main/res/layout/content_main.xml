@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_margin="16dp"
+    android:id="@+id/content_view"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:visibility="gone"
         android:layout_height="match_parent">
-
         <include layout="@layout/progress_shimmer_list" />
     </com.facebook.shimmer.ShimmerFrameLayout>
 

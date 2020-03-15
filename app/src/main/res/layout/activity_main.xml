@@ -17,18 +17,19 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
-        </androidx.appcompat.widget.Toolbar>
+            app:popupTheme="@style/AppTheme.PopupOverlay"></androidx.appcompat.widget.Toolbar>
+
         <ProgressBar
             android:id="@+id/progress"
-            android:layout_marginTop="-7dp"
-            android:visibility="gone"
-            android:layout_marginBottom="-7dp"
-            android:indeterminate="true"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal" />
+            android:layout_marginTop="-7dp"
+            android:layout_marginBottom="-7dp"
+            android:indeterminate="true"
+            android:visibility="gone" />
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -36,7 +37,16 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/content_main" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/content_main" />
+
+            <include layout="@layout/feedback_view" />
+        </LinearLayout>
+
     </FrameLayout>
 
 

@@ -1,8 +1,7 @@
-package com.lukemadzedze.zapperdisplay.persons.data.source.local.dao;
+package com.lukemadzedze.zapperdisplay.persons.data.datasource.local.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Database;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -15,7 +14,10 @@ import java.util.List;
 @Dao
 public interface PersonDao {
     @Query("SELECT * FROM persons")
-    List<Person> getAll();
+    LiveData<List<Person>> getPersonsLiveData();
+
+    @Query("SELECT * FROM persons")
+    List<Person> getPersons();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Long insert(Person item);

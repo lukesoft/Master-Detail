@@ -4,24 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lukemadzedze.zapperdisplay.R;
-import com.lukemadzedze.zapperdisplay.persons.data.Resource;
-import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
 import com.lukemadzedze.zapperdisplay.persons.view.activity.MainActivity;
 import com.lukemadzedze.zapperdisplay.persons.view.adapter.PersonsListAdapter;
 import com.lukemadzedze.zapperdisplay.persons.view.listener.PersonListClickListener;
 import com.lukemadzedze.zapperdisplay.persons.viewmodel.MainViewModel;
 
-import java.util.List;
 import java.util.Objects;
-
-
 
 import dagger.android.support.DaggerFragment;
 
@@ -58,14 +52,11 @@ public class PersonListFragment extends DaggerFragment {
     }
 
     private void initObservers() {
-        viewModel.personsLiveData().observe(this, new Observer<Resource<List<Person>>>() {
-            @Override
-            public void onChanged(Resource<List<Person>> listResource) {
-                if (listResource.data != null) {
-                    adapter.submitList(listResource.data);
-                }
-
+        viewModel.getPersons().observe(this, listResource -> {
+            if (listResource == null) {
+                return;
             }
+            adapter.submitList(listResource.data);
         });
     }
 }

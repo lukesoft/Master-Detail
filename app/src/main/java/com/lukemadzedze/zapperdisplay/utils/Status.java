@@ -1,4 +1,4 @@
-package com.lukemadzedze.zapperdisplay.persons;
+package com.lukemadzedze.zapperdisplay.utils;
 
 public enum Status {
     SUCCESS,

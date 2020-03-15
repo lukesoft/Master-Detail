@@ -1,13 +1,16 @@
 package com.lukemadzedze.zapperdisplay.di;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.lukemadzedze.zapperdisplay.App;
 import com.lukemadzedze.zapperdisplay.persons.PersonsModule;
-import com.lukemadzedze.zapperdisplay.persons.data.source.local.LocalDatabase;
+import com.lukemadzedze.zapperdisplay.persons.data.datasource.local.LocalDatabase;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -29,6 +32,20 @@ public class AppModule {
     public LocalDatabase provideDatabase(Application application){
         return LocalDatabase.getInstance(application);
     }
+
+
+    @Provides
+    @Singleton
+    public Executor provideIOExecutor(){
+        return Executors.newSingleThreadExecutor();
+    }
+
+    @Provides
+    @Singleton
+    public Handler provideUIExecutor(){
+        return new Handler(Looper.getMainLooper());
+    }
+
     @Provides
     @Singleton
     public Retrofit provideRetrofit(OkHttpClient client, Gson gson) {

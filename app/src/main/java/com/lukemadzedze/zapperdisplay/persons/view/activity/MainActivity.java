@@ -2,16 +2,17 @@ package com.lukemadzedze.zapperdisplay.persons.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.lukemadzedze.zapperdisplay.R;
-import com.lukemadzedze.zapperdisplay.persons.Status;
-import com.lukemadzedze.zapperdisplay.persons.data.Resource;
+import com.lukemadzedze.zapperdisplay.utils.Resource;
 import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
 import com.lukemadzedze.zapperdisplay.persons.view.fragment.PersonDetailFragment;
 import com.lukemadzedze.zapperdisplay.persons.view.fragment.PersonListFragment;
@@ -34,9 +35,12 @@ public class MainActivity extends DaggerAppCompatActivity implements PersonListC
     @Inject
     MainViewModelFactory mainViewModelFactory;
 
-    ProgressBar progressBar;
-    View container;
+    private ProgressBar progressBar;
+    private View container;
     private ShimmerFrameLayout shimmerProgress;
+    private LinearLayout contentView;
+    private LinearLayout feedbackView;
+    private TextView feedbackText;
 
 
     @Override
@@ -47,29 +51,51 @@ public class MainActivity extends DaggerAppCompatActivity implements PersonListC
         initViewModel();
         initObservers();
 
-        viewModel.fetchPersons();
+        viewModel.getPersons();
     }
 
     private void initObservers() {
-        viewModel.personsLiveData().observe(this, new Observer<Resource<List<Person>>>() {
-            @Override
-            public void onChanged(Resource<List<Person>> listResource) {
-                if (listResource.status == Status.LOADING) {
-                    if (listResource.data == null) {
+        viewModel.getPersons().observe(this, listResource -> {
+            if (listResource == null) {
+                return;
+            }
+
+            resetViews();
+
+            switch (listResource.status) {
+                case LOADING:
+                    if (listResource.data == null || listResource.data.isEmpty()) {
                         showShimmerProgress(true);
                     } else {
                         progressBar.setVisibility(View.VISIBLE);
                     }
-                } else {
-                    showShimmerProgress(false);
-                    progressBar.setVisibility(View.GONE);
-                }
-
-                if (listResource.status == Status.ERROR) {
-                    Toast.makeText(MainActivity.this, "Error loading persons list from network", Toast.LENGTH_LONG).show();
-                }
+                    break;
+                case ERROR:
+                case SUCCESS:
+                    showFeedbackView(listResource);
+                    break;
             }
         });
+    }
+
+    private void resetViews() {
+        showShimmerProgress(false);
+        progressBar.setVisibility(View.GONE);
+        feedbackView.setVisibility(View.GONE);
+        contentView.setVisibility(View.VISIBLE);
+    }
+
+    private void showFeedbackView(Resource<List<Person>> listResource) {
+        if (listResource.data.isEmpty()) {
+            feedbackText.setText(listResource.message != null ? listResource.message : getString(R.string.no_content_found));
+
+            feedbackView.setVisibility(View.VISIBLE);
+            contentView.setVisibility(View.GONE);
+        } else {
+            if (listResource.message != null) {
+                Toast.makeText(this, listResource.message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void initViewModel() {
@@ -80,6 +106,10 @@ public class MainActivity extends DaggerAppCompatActivity implements PersonListC
         progressBar = findViewById(R.id.progress);
         shimmerProgress = findViewById(R.id.progress_shimmer);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        feedbackView = findViewById(R.id.feedback_view);
+        contentView = findViewById(R.id.content_view);
+        feedbackText = findViewById(R.id.feedback_text);
+
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
@@ -104,13 +134,21 @@ public class MainActivity extends DaggerAppCompatActivity implements PersonListC
 
     private void showShimmerProgress(Boolean show) {
         if (show) {
-            container.setVisibility(View.GONE);
-            shimmerProgress.setVisibility(View.VISIBLE);
-            shimmerProgress.startShimmer();
+
+            if ((shimmerProgress.getVisibility() != View.VISIBLE)) {
+                container.setVisibility(View.GONE);
+                shimmerProgress.setVisibility(View.VISIBLE);
+                shimmerProgress.startShimmer();
+            }
+
         } else {
-            container.setVisibility(View.VISIBLE);
-            shimmerProgress.setVisibility(View.GONE);
-            shimmerProgress.stopShimmer();
+
+            if ((shimmerProgress.getVisibility() != View.GONE)) {
+                container.setVisibility(View.VISIBLE);
+                shimmerProgress.setVisibility(View.GONE);
+                shimmerProgress.stopShimmer();
+            }
+
         }
     }
 

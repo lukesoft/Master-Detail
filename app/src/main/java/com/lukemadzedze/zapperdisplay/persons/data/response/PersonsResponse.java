@@ -1,9 +1,11 @@
-package com.lukemadzedze.zapperdisplay.persons.data.model;
+package com.lukemadzedze.zapperdisplay.persons.data.response;
+
+import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class PersonListResponse implements Serializable {
+public class PersonsResponse implements Serializable {
     private String msg;
     private List<Person> persons;
 

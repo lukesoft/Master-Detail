@@ -21,6 +21,10 @@ android {
             resValue("string", "PORT_NUMBER", "8081")
         }
     }
+    compileOptions {
+        targetCompatibility = 1.8
+        sourceCompatibility = 1.8
+    }
 }
 
 dependencies {
