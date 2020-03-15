@@ -17,20 +17,20 @@
         <View
             android:layout_width="@dimen/shimmer_id_width"
             android:layout_height="@dimen/shimmer_text_height"
-            android:background="@color/shimmer_gray"
+            android:background="@color/light_gray"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/text_margin" />
 
 
         <View
-            android:background="@color/shimmer_gray"
+            android:background="@color/light_gray"
             android:layout_gravity="center_horizontal"
             android:layout_width="@dimen/shimmer_text_width"
             android:layout_height="@dimen/shimmer_text_height"
             android:layout_margin="@dimen/text_margin" />
 
         <View
-            android:background="@color/shimmer_gray"
+            android:background="@color/light_gray"
             android:layout_gravity="center_horizontal"
             android:layout_width="@dimen/shimmer_text_width"
             android:layout_height="@dimen/shimmer_text_height"

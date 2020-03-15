@@ -2,7 +2,6 @@ package com.lukemadzedze.zapperdisplay.persons.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -113,19 +112,24 @@ public class MainActivity extends DaggerAppCompatActivity implements PersonListC
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        PersonListFragment fragment = new PersonListFragment();
-        fragment.setListener(this);
+        PersonListFragment listFragment = new PersonListFragment();
+        PersonDetailFragment detailFragment = new PersonDetailFragment();
+        listFragment.setListener(this);
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.item_list_container, fragment)
+                    .replace(R.id.item_list_container, listFragment)
+                    .commit();
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_detail_container, detailFragment)
                     .commit();
             container = findViewById(R.id.two_pane_container);
         } else {
             mTwoPane = false;
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.item_single_container, fragment)
+                    .replace(R.id.item_single_container, listFragment)
                     .commit();
 
             container = findViewById(R.id.item_single_container);
@@ -148,18 +152,14 @@ public class MainActivity extends DaggerAppCompatActivity implements PersonListC
                 shimmerProgress.setVisibility(View.GONE);
                 shimmerProgress.stopShimmer();
             }
-
         }
     }
 
     @Override
     public void onPersonItemClicked(Person person) {
-        Bundle arguments = new Bundle();
-        arguments.putInt(PersonDetailFragment.ARG_ITEM_ID, person.getId());
+        viewModel.setSelectedPersonId(person.getId());
 
         PersonDetailFragment fragment = new PersonDetailFragment();
-        fragment.setArguments(arguments);
-
         if (mTwoPane) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.item_detail_container, fragment)

@@ -19,7 +19,7 @@
             android:layout_height="@dimen/shimmer_text_height"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/text_margin"
-            android:background="@color/shimmer_gray" />
+            android:background="@color/light_gray" />
 
 
         <View
@@ -27,13 +27,13 @@
             android:layout_height="@dimen/shimmer_text_height"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/text_margin"
-            android:background="@color/shimmer_gray" />
+            android:background="@color/light_gray" />
 
         <View
             android:layout_width="@dimen/shimmer_text_width"
             android:layout_height="@dimen/shimmer_text_height"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/text_margin"
-            android:background="@color/shimmer_gray" />
+            android:background="@color/light_gray" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

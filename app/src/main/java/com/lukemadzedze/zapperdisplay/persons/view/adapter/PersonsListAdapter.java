@@ -15,8 +15,8 @@ import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
 import com.lukemadzedze.zapperdisplay.persons.view.listener.PersonListClickListener;
 
 public class PersonsListAdapter extends ListAdapter<Person, PersonsListAdapter.PersonViewHolder> {
-
     private PersonListClickListener listener;
+
     public PersonsListAdapter(PersonListClickListener listener) {
         super(DIFF_CALLBACK);
 
@@ -51,13 +51,7 @@ public class PersonsListAdapter extends ListAdapter<Person, PersonsListAdapter.P
         void bindTo(final Person person) {
             id.setText(String.valueOf(person.getId()));
             name.setText(person.getName());
-
-            this.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onPersonItemClicked(person);
-                }
-            });
+            this.itemView.setOnClickListener(v -> listener.onPersonItemClicked(person));
         }
     }
 

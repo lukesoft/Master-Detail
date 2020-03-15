@@ -11,6 +11,7 @@ import androidx.lifecycle.MediatorLiveData;
 
 import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,7 +22,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public abstract class PollingNetworkBoundResource<ResultType, RequestType> extends NetworkBoundResource<ResultType, RequestType> {
-
     protected PollingNetworkBoundResource(Executor mExecutor, Handler UIExecutor, long delay, long period) {
         this.executor = mExecutor;
         this.UIExecutor = UIExecutor;
@@ -36,6 +36,7 @@ public abstract class PollingNetworkBoundResource<ResultType, RequestType> exten
 
             }
         }, delay, period);
+
     }
 
     @Override

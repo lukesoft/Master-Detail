@@ -24,7 +24,7 @@ import retrofit2.Call;
 public class PersonsRepositoryImpl implements PersonsRepository {
     private static final String TAG = "PersonsRepositoryImpl";
     private static final int DELAY = 0;
-    private static final int PERIOD = 1000 * 10;
+    private static final int PERIOD = 1000 * 60;
 
     private PersonDao dao;
     private PersonService service;
