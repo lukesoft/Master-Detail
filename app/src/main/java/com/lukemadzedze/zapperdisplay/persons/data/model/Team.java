@@ -37,4 +37,14 @@ public class Team implements Serializable {
     public void setTeam(String team) {
         this.team = team;
     }
+
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Team)) {
+            return false;
+        }
+        Team that = (Team) other;
+        return this.getId() == that.getId() && this.person.equals(that.person);
+    }
 }

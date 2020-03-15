@@ -1,9 +1,11 @@
 package com.lukemadzedze.zapperdisplay.persons.data.repo;
-
 import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
+import com.lukemadzedze.zapperdisplay.persons.data.repo.base.Repository;
 
 import java.util.List;
 
-public interface PersonsRepository {
-    List<Person> getAll();
+import io.reactivex.Completable;
+
+public interface PersonsRepository extends Repository<List<Person>> {
+    Completable fetchData();
 }

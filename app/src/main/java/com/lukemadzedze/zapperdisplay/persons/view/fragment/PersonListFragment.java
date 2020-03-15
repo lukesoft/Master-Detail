@@ -4,102 +4,68 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
 import com.lukemadzedze.zapperdisplay.R;
+import com.lukemadzedze.zapperdisplay.persons.data.Resource;
+import com.lukemadzedze.zapperdisplay.persons.data.model.Person;
 import com.lukemadzedze.zapperdisplay.persons.view.activity.MainActivity;
+import com.lukemadzedze.zapperdisplay.persons.view.adapter.PersonsListAdapter;
+import com.lukemadzedze.zapperdisplay.persons.view.listener.PersonListClickListener;
+import com.lukemadzedze.zapperdisplay.persons.viewmodel.MainViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class PersonListFragment extends Fragment {
+
+
+import dagger.android.support.DaggerFragment;
+
+
+public class PersonListFragment extends DaggerFragment {
+    private MainViewModel viewModel;
+    private PersonListClickListener listener;
+    private PersonsListAdapter adapter;
 
     public PersonListFragment() {
+    }
+
+    public void setListener(PersonListClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = ((MainActivity) Objects.requireNonNull(getActivity())).getViewModel();
+
+        initObservers();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
-        View recyclerView = rootView.findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        RecyclerView recyclerView = rootView.findViewById(R.id.item_list);
 
+        adapter = new PersonsListAdapter(listener);
+        recyclerView.setAdapter(adapter);
         return rootView;
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(((MainActivity)this.getActivity()), new ArrayList<Person>()));
-    }
-
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final MainActivity mParentActivity;
-        private final List<Person> mValues;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    private void initObservers() {
+        viewModel.personsLiveData().observe(this, new Observer<Resource<List<Person>>>() {
             @Override
-            public void onClick(View view) {
-                Person item = (Person) view.getTag();
-                Bundle arguments = new Bundle();
-                arguments.putInt(PersonDetailFragment.ARG_ITEM_ID, item.getId());
-                PersonDetailFragment fragment = new PersonDetailFragment();
-                fragment.setArguments(arguments);
-
-                if (mParentActivity.isTwoPane()) {
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
-                            .commit();
-                } else {
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.item_single_container, fragment)
-                            .addToBackStack(null)
-                            .commit();
+            public void onChanged(Resource<List<Person>> listResource) {
+                if (listResource.data != null) {
+                    adapter.submitList(listResource.data);
                 }
+
             }
-        };
-
-        SimpleItemRecyclerViewAdapter(MainActivity parent,
-                                      List<Person> items) {
-            mValues = items;
-            mParentActivity = parent;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_person, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).getId());
-            holder.mContentView.setText(mValues.get(position).getName());
-
-            holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
-
-            ViewHolder(View view) {
-                super(view);
-                mIdView = view.findViewById(R.id.id);
-                mContentView = view.findViewById(R.id.name);
-            }
-        }
+        });
     }
 }

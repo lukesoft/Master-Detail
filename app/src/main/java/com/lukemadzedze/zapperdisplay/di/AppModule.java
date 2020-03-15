@@ -1,8 +1,12 @@
 package com.lukemadzedze.zapperdisplay.di;
 
+import android.app.Application;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.lukemadzedze.zapperdisplay.App;
 import com.lukemadzedze.zapperdisplay.persons.PersonsModule;
+import com.lukemadzedze.zapperdisplay.persons.data.source.local.LocalDatabase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +23,12 @@ import static com.lukemadzedze.zapperdisplay.AppConfig.BASE_URL;
 
 @Module (includes = PersonsModule.class)
 public class AppModule {
+
+    @Provides
+    @Singleton
+    public LocalDatabase provideDatabase(Application application){
+        return LocalDatabase.getInstance(application);
+    }
     @Provides
     @Singleton
     public Retrofit provideRetrofit(OkHttpClient client, Gson gson) {
@@ -33,9 +43,11 @@ public class AppModule {
     @Singleton
     public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingIntercepter) {
         return new OkHttpClient.Builder()
-                .addInterceptor(loggingIntercepter)
+                .readTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(false)
+                .addInterceptor(loggingIntercepter)
                 .build();
 
 

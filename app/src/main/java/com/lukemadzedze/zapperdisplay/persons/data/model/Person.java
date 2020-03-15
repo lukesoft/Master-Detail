@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity (tableName = "persons")
+@Entity(tableName = "persons")
 public class Person implements Serializable {
     @PrimaryKey
     private int id;
@@ -26,4 +26,14 @@ public class Person implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Person)) {
+            return false;
+        }
+        Person that = (Person) other;
+        return this.getId() == that.getId() && this.name.equals(that.name);
+    }
+
 }
