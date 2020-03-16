@@ -25,17 +25,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    testImplementation  'org.mockito:mockito-core:2.23.0'
-    androidTestImplementation 'org.mockito:mockito-android:2.23.0'
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
+    implementation "androidx.recyclerview:recyclerview:$recyclerviewVersion"
+    implementation "com.google.android.material:material:$androidMaterialVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExtVersion"
+    implementation "com.facebook.shimmer:shimmer:$shimmerVersion"
 
     //Dagger Dependencies
     api "com.google.dagger:dagger:$daggerVersion"
@@ -51,8 +46,17 @@ dependencies {
     api "com.squareup.okhttp3:okhttp:$okhttpVersion"
     api "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
 
-
     //Room
     api "androidx.room:room-runtime:$roomVersion"
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
+
+    // Testing
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
+    androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
+
+    androidTestImplementation "androidx.test.ext:junit:$testExtVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "android.arch.core:core-testing:$archVersion"
 }

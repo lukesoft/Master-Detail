@@ -10,6 +10,7 @@ import com.lukemadzedze.zapperdisplay.persons.data.repo.PersonsRepository;
 import com.lukemadzedze.zapperdisplay.persons.data.response.PersonsResponse;
 import com.lukemadzedze.zapperdisplay.persons.data.datasource.local.dao.PersonDao;
 import com.lukemadzedze.zapperdisplay.persons.data.datasource.network.PersonService;
+import com.lukemadzedze.zapperdisplay.utils.AppExecutors;
 import com.lukemadzedze.zapperdisplay.utils.PollingNetworkBoundResource;
 import com.lukemadzedze.zapperdisplay.utils.Resource;
 
@@ -28,21 +29,19 @@ public class PersonsRepositoryImpl implements PersonsRepository {
 
     private PersonDao dao;
     private PersonService service;
-    private Executor IOexecutor;
-    private Handler UIExecutor;
+    private AppExecutors executors;
 
 
     @Inject
-    public PersonsRepositoryImpl(PersonService service, PersonDao dao, Executor IOexecutor, Handler UIExecutor) {
+    public PersonsRepositoryImpl(PersonService service, PersonDao dao, AppExecutors executors) {
         this.service = service;
         this.dao = dao;
-        this.IOexecutor = IOexecutor;
-        this.UIExecutor = UIExecutor;
+        this.executors = executors;
     }
 
     @Override
     public LiveData<Resource<List<Person>>> getPersons() {
-        return new PollingNetworkBoundResource<List<Person>, PersonsResponse>(this.IOexecutor, this.UIExecutor, DELAY, PERIOD) {
+        return new PollingNetworkBoundResource<List<Person>, PersonsResponse>(this.executors, DELAY, PERIOD) {
             @Override
             protected void saveCallResult(@NonNull PersonsResponse response) {
                 List<Person> cachedList = dao.getPersons();

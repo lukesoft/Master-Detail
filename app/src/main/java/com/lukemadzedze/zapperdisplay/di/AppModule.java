@@ -8,11 +8,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lukemadzedze.zapperdisplay.persons.PersonsModule;
 import com.lukemadzedze.zapperdisplay.persons.data.datasource.local.LocalDatabase;
+import com.lukemadzedze.zapperdisplay.utils.MainThreadExecutor;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -33,17 +35,18 @@ public class AppModule {
         return LocalDatabase.getInstance(application);
     }
 
-
     @Provides
     @Singleton
-    public Executor provideIOExecutor(){
-        return Executors.newSingleThreadExecutor();
+    @Named("networkExecutor")
+    public Executor provideNetworkExecutor(){
+        return Executors.newFixedThreadPool(3);
     }
 
     @Provides
     @Singleton
-    public Handler provideUIExecutor(){
-        return new Handler(Looper.getMainLooper());
+    @Named("mainThreadExecutor")
+    public Executor provideMainThreadExecutor(){
+        return new MainThreadExecutor();
     }
 
     @Provides

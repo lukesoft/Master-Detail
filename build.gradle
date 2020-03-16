@@ -4,11 +4,11 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
-        
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,8 +21,16 @@ ext {
     lifecycleVersion = "2.0.0"
     coroutinesVersion = "1.1.1"
     gsonVersion = "2.8.6"
-
-
+    mockitoVersion = "2.23.0"
+    junitVersion = "4.12"
+    archVersion = "1.1.1"
+    lifecycleExtVersion = "2.0.0"
+    shimmerVersion = "0.5.0"
+    androidMaterialVersion = "1.1.0"
+    recyclerviewVersion = "1.1.0"
+    legacySupportVersion = "1.0.0"
+    appcompatVersion = "1.1.0"
+    testExtVersion="1.1.1"
 }
 
 
@@ -30,7 +38,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+
     }
 }
 

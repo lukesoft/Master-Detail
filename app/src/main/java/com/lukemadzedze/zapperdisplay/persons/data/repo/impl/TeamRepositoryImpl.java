@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 
 import com.lukemadzedze.zapperdisplay.persons.data.repo.TeamRepository;
 import com.lukemadzedze.zapperdisplay.persons.data.response.TeamResponse;
+import com.lukemadzedze.zapperdisplay.utils.AppExecutors;
 import com.lukemadzedze.zapperdisplay.utils.NetworkBoundResource;
 import com.lukemadzedze.zapperdisplay.utils.Resource;
 import com.lukemadzedze.zapperdisplay.persons.data.model.Team;
@@ -24,20 +25,18 @@ import retrofit2.Call;
 public class TeamRepositoryImpl implements TeamRepository {
     private TeamDao teamCache;
     private TeamService teamRemote;
-    private Executor IOexecutor;
-    private Handler UIExecutor;
+    private AppExecutors executors;
 
     @Inject
-    public TeamRepositoryImpl(TeamDao teamCache, TeamService teamRemote, Executor IOexecutor, Handler UIExecutor) {
+    public TeamRepositoryImpl(TeamDao teamCache, TeamService teamRemote, AppExecutors executors) {
         this.teamCache = teamCache;
         this.teamRemote = teamRemote;
-        this.IOexecutor = IOexecutor;
-        this.UIExecutor = UIExecutor;
+        this.executors = executors;
     }
 
     @Override
     public LiveData<Resource<Team>> getTeamByPersonId(int personId) {
-        return new NetworkBoundResource<Team, TeamResponse>(this.IOexecutor, this.UIExecutor) {
+        return new NetworkBoundResource<Team, TeamResponse>(executors) {
             @Override
             protected void saveCallResult(@NonNull TeamResponse teamResponse) {
                 teamResponse.setId(personId);

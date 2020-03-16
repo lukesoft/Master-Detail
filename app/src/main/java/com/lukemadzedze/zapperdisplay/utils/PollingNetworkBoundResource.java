@@ -22,18 +22,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public abstract class PollingNetworkBoundResource<ResultType, RequestType> extends NetworkBoundResource<ResultType, RequestType> {
-    protected PollingNetworkBoundResource(Executor mExecutor, Handler UIExecutor, long delay, long period) {
-        this.executor = mExecutor;
-        this.UIExecutor = UIExecutor;
+    protected PollingNetworkBoundResource(AppExecutors appExecutors, long delay, long period) {
+        this.appExecutors = appExecutors;
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                UIExecutor.post(() -> {
+                appExecutors.mainThread().execute(() -> {
                     LiveData<ResultType> dbSource = loadFromDb();
                     fetchFromNetwork(dbSource);
                 });
-
             }
         }, delay, period);
 
