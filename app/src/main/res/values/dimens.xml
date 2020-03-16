@@ -9,4 +9,11 @@
     <dimen name="shimmer_id_width">20dp</dimen>
     <dimen name="shimmer_text_height">20dp</dimen>
     <dimen name="shimmer_text_width">150dp</dimen>
+    <dimen name="progress_bar_margin">-7dp</dimen>
+    <dimen name="content_margin">16dp</dimen>
+    <dimen name="list_container_margin">16dp</dimen>
+    <dimen name="shimmer_margin">16dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_bottom_margin">5dp</dimen>
+
 </resources>
